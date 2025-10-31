@@ -25,9 +25,9 @@ const poppins = Poppins({
 	display: 'swap',
 });
 export const metadata = {
-	title: 'Crochet - Fashion & Style',
+	title: 'Kupasi - Premium Tea Cups Collection',
 	description:
-		'Step into the realm of unparalleled style with our unbeatable t-shirt trendsetter of today. Discover hidden gems in fashion trends.',
+		'Discover our exquisite collection of premium tea cups. From classic porcelain to elegant bone china, find the perfect tea cup for your daily tea ritual.',
 };
 
 export default function RootLayout({ children }) {
