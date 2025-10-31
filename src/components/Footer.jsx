@@ -30,7 +30,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><a href="/" className="text-gray-300 hover:text-yellow-400 transition-colors">Home</a></li>
               <li><a href="/about" className="text-gray-300 hover:text-yellow-400 transition-colors">About</a></li>
-              <li><a href="/shop" className="text-gray-300 hover:text-yellow-400 transition-colors">Shop All</a></li>
+              <li><a href="/#" className="text-gray-300 hover:text-yellow-400 transition-colors">Blogs</a></li>
             </ul>
           </div>
 
@@ -38,9 +38,9 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-display font-semibold mb-4 text-yellow-400">Utility Pages</h3>
             <ul className="space-y-2">             
-              <li><a href="/contact" className="text-gray-300 hover:text-yellow-400 transition-colors">Contact</a></li>
-              <li><a href="/faq" className="text-gray-300 hover:text-yellow-400 transition-colors">FAQs</a></li>
-              <li><a href="/privacy" className="text-gray-300 hover:text-yellow-400 transition-colors ">Privacy Policy</a></li>
+              <li><a href="/#" className="text-gray-300 hover:text-yellow-400 transition-colors">Contact</a></li>
+              <li><a href="/#" className="text-gray-300 hover:text-yellow-400 transition-colors">FAQs</a></li>
+              <li><a href="/#" className="text-gray-300 hover:text-yellow-400 transition-colors ">Privacy Policy</a></li>
             </ul>
           </div>
 
@@ -85,7 +85,7 @@ const Footer = () => {
               <div className="w-8 h-8 bg-white rounded flex items-center justify-center">
                 <Image src={Logo} alt='logo' width={32} height={32} />
               </div>
-              <span className="text-xl font-bold">Crochet</span>
+              <span className="text-xl font-bold">Kupasi</span>
             </div>
            
           </div>

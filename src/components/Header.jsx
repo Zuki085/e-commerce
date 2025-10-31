@@ -78,10 +78,15 @@ const Header = () => {
 					{/* Logo */}
 					<div className='flex items-center space-x-2'>
 						<div className='w-8 h-8 bg-gray-800 rounded flex items-center justify-center'>
-							<Image src={Logo} alt='logo' width={32} height={32} />
+							<Image
+								src={Logo}
+								alt='logo'
+								width={32}
+								height={32}
+							/>
 						</div>
 						<span className='text-xl font-display font-bold text-gray-800'>
-							Crochet
+							Kupasi
 						</span>
 					</div>
 
@@ -94,24 +99,23 @@ const Header = () => {
 							Home
 						</a>
 						<a
-							href='/about'
+							href='/#'
 							className='text-gray-800 hover:text-gray-600 font-accent font-medium'
 						>
 							About
 						</a>
 						<a
-							href='/shop'
+							href='/#'
 							className='text-gray-800 hover:text-gray-600 font-accent font-medium'
 						>
-							Shop All
+							Blogs
 						</a>
 						<a
-							href='/contact'
+							href='/#'
 							className='text-gray-800 hover:text-gray-600 font-accent font-medium'
 						>
-							Contact
+							Contact Us
 						</a>
-					
 					</nav>
 
 					{/* Icons */}

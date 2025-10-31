@@ -194,7 +194,7 @@ const ProductDetailsPage = ({ params }) => {
 					{/* Loading Text */}
 					<div className='space-y-2'>
 						<h2 className='text-2xl font-display font-bold bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent'>
-							Crochet
+							Kupasi
 						</h2>
 						<p className='text-gray-600 font-sans'>
 							Loading product details...
