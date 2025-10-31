@@ -1,47 +1,161 @@
 'use client';
 
 import React, { useState, useEffect, use } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import { useCart } from '../../../context/CartContext';
-import {
-	fetchProducts,
-	getProductById,
-} from '../../../store/product/productThunk';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
+// Static dummy product data
+const dummyProducts = [
+	{
+		id: '1',
+		name: 'Classic White Porcelain Tea Cup',
+		price: 24.99,
+		originalPrice: 34.99,
+		category: 'Tea Cups',
+		description:
+			'A timeless classic, this elegant white porcelain tea cup combines traditional craftsmanship with modern durability. Perfect for your daily tea ritual.',
+		material: 'Porcelain',
+		shippingTime: '3-5 business days',
+		madeIn: 'China',
+		images: [
+			'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop',
+		],
+	},
+	{
+		id: '2',
+		name: 'Elegant Ceramic Tea Cup Set',
+		price: 49.99,
+		originalPrice: null,
+		category: 'Tea Cups',
+		description:
+			'Sophisticated ceramic tea cup with a smooth finish and ergonomic design. Ideal for both casual and formal tea settings.',
+		material: 'Ceramic',
+		shippingTime: '3-5 business days',
+		madeIn: 'Japan',
+		images: [
+			'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop',
+		],
+	},
+	{
+		id: '3',
+		name: 'Vintage Floral Tea Cup',
+		price: 29.99,
+		originalPrice: 39.99,
+		category: 'Tea Cups',
+		description:
+			'Beautiful vintage-inspired tea cup featuring delicate floral patterns. Adds a touch of elegance to your tea collection.',
+		material: 'Fine China',
+		shippingTime: '5-7 business days',
+		madeIn: 'United Kingdom',
+		images: [
+			'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop',
+		],
+	},
+	{
+		id: '4',
+		name: 'Modern Glass Tea Cup',
+		price: 19.99,
+		originalPrice: 29.99,
+		category: 'Tea Cups',
+		description:
+			'Contemporary glass tea cup that showcases the beautiful color of your tea. Perfect for visual tea appreciation.',
+		material: 'Borosilicate Glass',
+		shippingTime: '2-4 business days',
+		madeIn: 'Germany',
+		images: [
+			'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop',
+		],
+	},
+	{
+		id: '5',
+		name: 'Premium Bone China Tea Cup',
+		price: 59.99,
+		originalPrice: null,
+		category: 'Tea Cups',
+		description:
+			'Luxurious bone china tea cup known for its translucency and durability. A premium choice for the discerning tea enthusiast.',
+		material: 'Bone China',
+		shippingTime: '5-7 business days',
+		madeIn: 'United Kingdom',
+		images: [
+			'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop',
+		],
+	},
+	{
+		id: '6',
+		name: 'Japanese Style Tea Cup',
+		price: 34.99,
+		originalPrice: 44.99,
+		category: 'Tea Cups',
+		description:
+			'Authentic Japanese-style tea cup with traditional design elements. Perfect for matcha and green tea ceremonies.',
+		material: 'Stoneware',
+		shippingTime: '7-10 business days',
+		madeIn: 'Japan',
+		images: [
+			'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop',
+		],
+	},
+	{
+		id: '7',
+		name: 'Hand-painted Tea Cup',
+		price: 27.99,
+		originalPrice: 37.99,
+		category: 'Tea Cups',
+		description:
+			'Unique hand-painted tea cup with artistic designs. Each piece is one-of-a-kind, making it a special addition to your collection.',
+		material: 'Ceramic',
+		shippingTime: '5-7 business days',
+		madeIn: 'Turkey',
+		images: [
+			'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop',
+		],
+	},
+	{
+		id: '8',
+		name: 'Luxury Gold Trim Tea Cup',
+		price: 44.99,
+		originalPrice: null,
+		category: 'Tea Cups',
+		description:
+			'Opulent tea cup featuring elegant gold trim accents. Perfect for special occasions and elegant tea gatherings.',
+		material: 'Fine Bone China',
+		shippingTime: '5-7 business days',
+		madeIn: 'United Kingdom',
+		images: [
+			'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop',
+		],
+	},
+];
+
 const ProductDetailsPage = ({ params }) => {
 	const resolvedParams = use(params);
-	const dispatch = useDispatch();
 	const { addToCart } = useCart();
-
-	// Get product data from Redux store
-	const { currentProduct, loading, error } = useSelector(
-		state => state.product
-	);
 	const [quantity, setQuantity] = useState(1);
+	const [currentProduct, setCurrentProduct] = useState(null);
 	const [relatedProducts, setRelatedProducts] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		if (resolvedParams.id) {
-			dispatch(getProductById(resolvedParams.id));
-		}
-	}, [dispatch, resolvedParams.id]);
+		// Simulate loading delay
+		setTimeout(() => {
+			if (resolvedParams.id) {
+				const product = dummyProducts.find(
+					p => p.id === resolvedParams.id
+				);
+				setCurrentProduct(product || null);
 
-	useEffect(() => {
-		dispatch(
-			fetchProducts({
-				onSuccess: products => {
-					// Filter out current product and limit to 4 products
-					const filteredProducts = products
-						.filter(product => product.id !== resolvedParams.id)
-						.slice(0, 4);
-					setRelatedProducts(filteredProducts);
-				},
-			})
-		);
+				// Get related products (exclude current product, limit to 4)
+				const filtered = dummyProducts
+					.filter(p => p.id !== resolvedParams.id)
+					.slice(0, 4);
+				setRelatedProducts(filtered);
+			}
+			setLoading(false);
+		}, 300);
 	}, [resolvedParams.id]);
 
 	if (loading) {
@@ -49,63 +163,56 @@ const ProductDetailsPage = ({ params }) => {
 			<div className='min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center'>
 				<div className='text-center'>
 					{/* Animated Purse Icon */}
-					<div className="relative mb-8">
-						<div className="w-20 h-20 mx-auto relative">
+					<div className='relative mb-8'>
+						<div className='w-20 h-20 mx-auto relative'>
 							{/* Purse Body */}
-							<div className="w-full h-16 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-t-2xl rounded-b-lg animate-pulse shadow-lg">
+							<div className='w-full h-16 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-t-2xl rounded-b-lg animate-pulse shadow-lg'>
 								{/* Purse Handle */}
-								<div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-8 h-4 border-4 border-yellow-600 rounded-full border-b-0 animate-bounce"></div>
+								<div className='absolute -top-2 left-1/2 transform -translate-x-1/2 w-8 h-4 border-4 border-yellow-600 rounded-full border-b-0 animate-bounce'></div>
 								{/* Purse Details */}
-								<div className="absolute top-2 left-2 w-2 h-2 bg-yellow-200 rounded-full animate-ping"></div>
-								<div className="absolute top-2 right-2 w-2 h-2 bg-yellow-200 rounded-full animate-ping" style={{ animationDelay: '0.5s' }}></div>
+								<div className='absolute top-2 left-2 w-2 h-2 bg-yellow-200 rounded-full animate-ping'></div>
+								<div
+									className='absolute top-2 right-2 w-2 h-2 bg-yellow-200 rounded-full animate-ping'
+									style={{ animationDelay: '0.5s' }}
+								></div>
 								{/* Purse Strap */}
-								<div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-yellow-600 rounded-full animate-pulse"></div>
+								<div className='absolute top-4 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-yellow-600 rounded-full animate-pulse'></div>
 							</div>
 							{/* Floating Sparkles */}
-							<div className="absolute -top-2 -left-2 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-60"></div>
-							<div className="absolute -top-1 -right-3 w-1.5 h-1.5 bg-amber-500 rounded-full animate-ping opacity-60" style={{ animationDelay: '0.3s' }}></div>
-							<div className="absolute -bottom-1 -left-1 w-1 h-1 bg-yellow-600 rounded-full animate-ping opacity-60" style={{ animationDelay: '0.7s' }}></div>
+							<div className='absolute -top-2 -left-2 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-60'></div>
+							<div
+								className='absolute -top-1 -right-3 w-1.5 h-1.5 bg-amber-500 rounded-full animate-ping opacity-60'
+								style={{ animationDelay: '0.3s' }}
+							></div>
+							<div
+								className='absolute -bottom-1 -left-1 w-1 h-1 bg-yellow-600 rounded-full animate-ping opacity-60'
+								style={{ animationDelay: '0.7s' }}
+							></div>
 						</div>
 					</div>
-					
+
 					{/* Loading Text */}
-					<div className="space-y-2">
-						<h2 className="text-2xl font-display font-bold bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
+					<div className='space-y-2'>
+						<h2 className='text-2xl font-display font-bold bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent'>
 							Crochet
 						</h2>
-						<p className="text-gray-600 font-sans">Loading product details...</p>
+						<p className='text-gray-600 font-sans'>
+							Loading product details...
+						</p>
 					</div>
-					
-					{/* Loading Dots */}
-					<div className="flex justify-center space-x-2 mt-6">
-						<div className="w-2 h-2 bg-yellow-400 rounded-full animate-bounce"></div>
-						<div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-						<div className="w-2 h-2 bg-yellow-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-					</div>
-				</div>
-			</div>
-		);
-	}
 
-	if (error) {
-		return (
-			<div className='min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center'>
-				<div className='text-center max-w-md mx-auto px-4'>
-					<div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-red-100 to-red-200 rounded-full flex items-center justify-center">
-						<svg className="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-						</svg>
+					{/* Loading Dots */}
+					<div className='flex justify-center space-x-2 mt-6'>
+						<div className='w-2 h-2 bg-yellow-400 rounded-full animate-bounce'></div>
+						<div
+							className='w-2 h-2 bg-amber-500 rounded-full animate-bounce'
+							style={{ animationDelay: '0.1s' }}
+						></div>
+						<div
+							className='w-2 h-2 bg-yellow-600 rounded-full animate-bounce'
+							style={{ animationDelay: '0.2s' }}
+						></div>
 					</div>
-					<h1 className='text-3xl font-display font-bold text-gray-800 mb-4'>
-						Error Loading Product
-					</h1>
-					<p className='text-gray-600 mb-8 font-sans'>{error}</p>
-					<a
-						href='/shop'
-						className='inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-900 font-accent font-semibold rounded-xl hover:from-yellow-300 hover:to-amber-400 transition-all duration-300 hover:scale-105 hover:shadow-lg'
-					>
-						Back to Shop
-					</a>
 				</div>
 			</div>
 		);
@@ -115,9 +222,19 @@ const ProductDetailsPage = ({ params }) => {
 		return (
 			<div className='min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center'>
 				<div className='text-center max-w-md mx-auto px-4'>
-					<div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-yellow-100 to-amber-200 rounded-full flex items-center justify-center">
-						<svg className="w-10 h-10 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.709M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+					<div className='w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-yellow-100 to-amber-200 rounded-full flex items-center justify-center'>
+						<svg
+							className='w-10 h-10 text-amber-500'
+							fill='none'
+							stroke='currentColor'
+							viewBox='0 0 24 24'
+						>
+							<path
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								strokeWidth={2}
+								d='M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.009-5.824-2.709M15 12a3 3 0 11-6 0 3 3 0 016 0z'
+							/>
 						</svg>
 					</div>
 					<h1 className='text-3xl font-display font-bold text-gray-800 mb-4'>
@@ -241,20 +358,16 @@ const ProductDetailsPage = ({ params }) => {
 					<div className='grid grid-cols-1 lg:grid-cols-2 gap-16'>
 						{/* Product Images */}
 						<div className='space-y-6'>
-							<div className='grid grid-cols-2 gap-4'>
+							<div className='group'>
 								{currentProduct.images &&
 								currentProduct.images.length > 0 ? (
-									currentProduct.images.map((image, idx) => (
-										<div key={idx} className="group">
-											<img
-												src={image}
-												alt={`product image ${idx + 1}`}
-												className='aspect-square rounded-2xl object-cover shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105'
-											/>
-										</div>
-									))
+									<img
+										src={currentProduct.images[0]}
+										alt={currentProduct.name}
+										className='w-full aspect-square rounded-2xl object-cover shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105'
+									/>
 								) : (
-									<div className='aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center col-span-2 shadow-lg'>
+									<div className='aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center shadow-lg'>
 										<span className='text-gray-500 text-sm font-accent font-medium'>
 											No images available
 										</span>
@@ -279,7 +392,7 @@ const ProductDetailsPage = ({ params }) => {
 
 							{/* Price */}
 							<div className='text-3xl font-bold text-gray-800 flex items-center space-x-4'>
-								<span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
+								<span className='bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent'>
 									{`$${currentProduct.price} USD` ||
 										'Price not available'}
 								</span>
@@ -366,12 +479,13 @@ const ProductDetailsPage = ({ params }) => {
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
 					<div className='text-center mb-16'>
 						<h2 className='text-4xl font-display font-bold mb-4'>
-							<span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
+							<span className='bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent'>
 								Why Choose Crochet?
 							</span>
 						</h2>
 						<p className='text-xl text-gray-300 font-sans max-w-2xl mx-auto'>
-							Experience premium quality and exceptional service with every purchase
+							Experience premium quality and exceptional service
+							with every purchase
 						</p>
 					</div>
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
@@ -501,7 +615,7 @@ const ProductDetailsPage = ({ params }) => {
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
 					<div className='text-center mb-16'>
 						<h2 className='text-4xl font-display font-bold text-gray-800 mb-4'>
-							<span className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent">
+							<span className='bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 bg-clip-text text-transparent'>
 								Related Products
 							</span>
 						</h2>
@@ -515,7 +629,7 @@ const ProductDetailsPage = ({ params }) => {
 							<Link
 								key={product.id}
 								href={`/product/${product.id}`}
-								className="group"
+								className='group'
 							>
 								<div className='bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 group-hover:scale-105 border border-white/20'>
 									<div className='relative'>
