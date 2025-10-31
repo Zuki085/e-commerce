@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 const ModernHeroSection = () => {
 	const [currentSlide, setCurrentSlide] = useState(0);
@@ -7,24 +8,24 @@ const ModernHeroSection = () => {
 	const slides = [
 		{
 			id: 1,
-			title: 'Unique Style',
-			subtitle: 'Curated fashion pieces that tell your story',
+			title: 'Elegant Collection',
+			subtitle: 'Premium tea cups crafted for your perfect tea ritual',
 			bg: 'bg-gradient-to-br from-purple-400 to-pink-400',
-			img: '/images/slide1.jpg',
+			img: 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=800&h=800&fit=crop',
 		},
 		{
 			id: 2,
-			title: 'Trending Now',
-			subtitle: 'From timeless classics to trendsetting designs',
+			title: 'Artisan Crafted',
+			subtitle: 'Handcrafted ceramic and porcelain tea cups for discerning tea lovers',
 			bg: 'bg-gradient-to-br from-blue-400 to-purple-400',
-			img: '/images/slide2.jpg',
+			img: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=800&h=800&fit=crop',
 		},
 		{
 			id: 3,
-			title: 'Limited Edition',
-			subtitle: 'Exclusive pieces that reflect your personality',
+			title: 'Timeless Elegance',
+			subtitle: 'From classic bone china to modern glass designs',
 			bg: 'bg-gradient-to-br from-green-400 to-blue-400',
-			img: '/images/slide3.jpg',
+			img: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800&h=800&fit=crop',
 		},
 	];
 
@@ -94,12 +95,12 @@ const ModernHeroSection = () => {
 														}}
 													>
 														<span className='text-sm font-accent font-medium text-white'>
-															✨{' '}
+															☕{' '}
 															{index === 0
-																? 'New Collection'
+																? 'Premium Collection'
 																: index === 1
-																? 'Trending'
-																: 'Limited Edition'}
+																? 'Handcrafted'
+																: 'Bestseller'}
 														</span>
 													</div>
 
@@ -175,9 +176,9 @@ const ModernHeroSection = () => {
 														{slide.subtitle}
 													</p>
 
-													{/* CTA Buttons */}
+													{/* CTA Button */}
 													<div
-														className={`flex flex-col sm:flex-row gap-4 mb-12 transition-all duration-1000 ${
+														className={`mb-12 transition-all duration-1000 ${
 															index ===
 															currentSlide
 																? 'opacity-100 translate-y-0'
@@ -191,29 +192,28 @@ const ModernHeroSection = () => {
 																	: '0s',
 														}}
 													>
-														<button className='group px-8 py-4 bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900 font-accent font-semibold rounded-full hover:from-yellow-500 hover:to-amber-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'>
-															<span className='flex items-center justify-center'>
-																Shop Now
-																<svg
-																	className='ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform'
-																	fill='none'
-																	stroke='currentColor'
-																	viewBox='0 0 24 24'
-																>
-																	<path
-																		strokeLinecap='round'
-																		strokeLinejoin='round'
-																		strokeWidth={
-																			2
-																		}
-																		d='M17 8l4 4m0 0l-4 4m4-4H3'
-																	/>
-																</svg>
-															</span>
-														</button>
-														<button className='px-8 py-4 border-2 border-yellow-400/50 text-yellow-400 font-accent font-semibold rounded-full hover:bg-yellow-400/10 hover:border-yellow-400/80 transition-all duration-300 backdrop-blur-sm'>
-															View Collection
-														</button>
+														<Link href='/shop'>
+															<button className='group px-8 py-4 bg-gradient-to-r from-yellow-400 to-amber-500 text-gray-900 font-accent font-semibold rounded-full hover:from-yellow-500 hover:to-amber-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'>
+																<span className='flex items-center justify-center'>
+																	View Collection
+																	<svg
+																		className='ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform'
+																		fill='none'
+																		stroke='currentColor'
+																		viewBox='0 0 24 24'
+																	>
+																		<path
+																			strokeLinecap='round'
+																			strokeLinejoin='round'
+																			strokeWidth={
+																				2
+																			}
+																			d='M17 8l4 4m0 0l-4 4m4-4H3'
+																		/>
+																	</svg>
+																</span>
+															</button>
+														</Link>
 													</div>
 												</div>
 											</div>
